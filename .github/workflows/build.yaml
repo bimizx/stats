@@ -19,3 +19,14 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - run: xcodebuild -scheme Stats -destination 'platform=macOS' -configuration Release archive CODE_SIGNING_ALLOWED=NO
+      
+      - name: Zip App
+        run: |
+          ditto -c -k --sequesterRsrc --keepParent \
+            build/Stats.xcarchive/Products/Applications/Stats.app \
+            Stats.zip
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Stats
+          path: Stats.zip
